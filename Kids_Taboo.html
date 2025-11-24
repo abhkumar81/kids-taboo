@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Kids Taboo – 9 & 6 Years</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      margin-top: 20px;
+      width: 95%;
+      max-width: 480px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      margin: 0;
+    }
+
+    .mode-select {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 10px 0 20px;
+      flex-wrap: wrap;
+    }
+
+    .mode-select button {
+      padding: 6px 10px;
+      border-radius: 16px;
+      border: 1px solid #007aff;
+      background: white;
+      color: #007aff;
+      font-size: 13px;
+    }
+
+    .mode-select button.active {
+      background: #007aff;
+      color: white;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      padding: 16px 18px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .name {
+      text-align: center;
+      font-weight: 700;
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+
+    .taboos {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .taboos li {
+      margin: 4px 0;
+    }
+
+    .note {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    .footer {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .footer button {
+      padding: 10px 20px;
+      border-radius: 22px;
+      border: none;
+      background: #ff2d55;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .small {
+      text-align: center;
+      margin-top: 6px;
+      font-size: 11px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Kids Word Game</h1>
+    </div>
+
+    <div class="mode-select">
+      <button id="mode-nine" class="active">9-year-old Taboo</button>
+      <button id="mode-six">6-year-old Simple</button>
+    </div>
+
+    <div class="card">
+      <div>
+        <div id="card-name" class="name">Loading…</div>
+        <ul id="card-taboos" class="taboos"></ul>
+        <div id="note" class="note"></div>
+      </div>
+      <div class="small" id="counter"></div>
+    </div>
+
+    <div class="footer">
+      <button id="prev-btn">◀ Prev</button>
+      <button id="next-btn">Next ▶</button>
+    </div>
+  </div>
+
+  <script>
+    // =============== 9-YEAR-OLD TABOO CARDS (100 words) ===============
+    const nineCards = [
+      { name: "Cat", taboos: ["Kitten","Meow","Whiskers","Pet"] },
+      { name: "Dog", taboos: ["Puppy","Bark","Tail","Pet"] },
+      { name: "School", taboos: ["Classroom","Teacher","Study","Students"] },
+      { name: "Teacher", taboos: ["School","Class","Homework","Student"] },
+      { name: "Friend", taboos: ["Best","Play","Buddy","Together"] },
+      { name: "Pizza", taboos: ["Cheese","Slice","Toppings","Crust"] },
+      { name: "Ice cream", taboos: ["Cold","Scoop","Cone","Dessert"] },
+      { name: "Birthday", taboos: ["Cake","Party","Candles","Gifts"] },
+      { name: "Cake", taboos: ["Frosting","Candles","Sweet","Birthday"] },
+      { name: "Rainbow", taboos: ["Colors","Sky","Rain","Arc"] },
+
+      { name: "Sun", taboos: ["Hot","Day","Bright","Sky"] },
+      { name: "Moon", taboos: ["Night","Sky","Round","Light"] },
+      { name: "Stars", taboos: ["Night","Twinkle","Sky","Shine"] },
+      { name: "Cloud", taboos: ["White","Sky","Rain","Fluffy"] },
+      { name: "Rain", taboos: ["Wet","Umbrella","Drops","Cloudy"] },
+      { name: "Snow", taboos: ["White","Cold","Winter","Flakes"] },
+      { name: "River", taboos: ["Water","Flow","Stream","Bank"] },
+      { name: "Mountain", taboos: ["Tall","Climb","Rock","Peak"] },
+      { name: "Tree", taboos: ["Leaves","Trunk","Branch","Forest"] },
+      { name: "Flower", taboos: ["Petals","Garden","Smell","Plant"] },
+
+      { name: "Book", taboos: ["Pages","Read","Story","Library"] },
+      { name: "Pencil", taboos: ["Write","Sharp","Eraser","Lead"] },
+      { name: "Eraser", taboos: ["Rub","Remove","Pencil","Mistake"] },
+      { name: "Backpack", taboos: ["Bag","School","Books","Carry"] },
+      { name: "Desk", taboos: ["Table","Chair","School","Work"] },
+      { name: "Homework", taboos: ["School","Teacher","Worksheet","After"] },
+      { name: "Test", taboos: ["Exam","Study","Marks","Questions"] },
+      { name: "Recess", taboos: ["Break","Play","Outside","School"] },
+      { name: "Playground", taboos: ["Slide","Swing","Park","Play"] },
+      { name: "Swing", taboos: ["Push","Back","Forth","Seat"] },
+
+      { name: "Football", taboos: ["Ball","Goal","Kick","Team"] },
+      { name: "Basketball", taboos: ["Hoop","Bounce","Dribble","Court"] },
+      { name: "Swimming", taboos: ["Pool","Water","Strokes","Goggles"] },
+      { name: "Bicycle", taboos: ["Bike","Pedal","Wheels","Ride"] },
+      { name: "Skipping rope", taboos: ["Jump","Rope","Feet","Game"] },
+      { name: "Dance", taboos: ["Music","Move","Steps","Rhythm"] },
+      { name: "Music", taboos: ["Song","Notes","Sound","Listen"] },
+      { name: "Piano", taboos: ["Keys","Instrument","Music","Play"] },
+      { name: "Guitar", taboos: ["Strings","Instrument","Music","Play"] },
+      { name: "Song", taboos: ["Sing","Music","Lyrics","Tune"] },
+
+      { name: "Sister", taboos: ["Girl","Sibling","Brother","Family"] },
+      { name: "Brother", taboos: ["Boy","Sibling","Sister","Family"] },
+      { name: "Mother", taboos: ["Mom","Parent","Lady","Family"] },
+      { name: "Father", taboos: ["Dad","Parent","Man","Family"] },
+      { name: "Grandma", taboos: ["Old","Mother","Grandpa","Family"] },
+      { name: "Grandpa", taboos: ["Old","Father","Grandma","Family"] },
+      { name: "Baby", taboos: ["Small","Cry","Diaper","Cute"] },
+      { name: "Family", taboos: ["Home","Parents","Children","Together"] },
+      { name: "House", taboos: ["Home","Rooms","Live","Door"] },
+      { name: "Bedroom", taboos: ["Sleep","Bed","Pillow","Night"] },
+
+      { name: "Chocolate", taboos: ["Sweet","Candy","Bar","Brown"] },
+      { name: "Candy", taboos: ["Sweet","Sugar","Treat","Wrapper"] },
+      { name: "Potato chips", taboos: ["Snack","Salty","Packet","Crunchy"] },
+      { name: "Sandwich", taboos: ["Bread","Cheese","Lunch","Slice"] },
+      { name: "Milk", taboos: ["White","Drink","Glass","Cow"] },
+      { name: "Water bottle", taboos: ["Drink","Refill","Plastic","Thirsty"] },
+      { name: "Juice", taboos: ["Fruit","Drink","Glass","Orange"] },
+      { name: "Apple", taboos: ["Red","Fruit","Tree","Crunchy"] },
+      { name: "Banana", taboos: ["Yellow","Fruit","Peel","Monkey"] },
+      { name: "Mango", taboos: ["Orange","Fruit","Summer","Sweet"] },
+
+      { name: "Train", taboos: ["Tracks","Station","Engine","Travel"] },
+      { name: "Airplane", taboos: ["Wings","Fly","Airport","Pilot"] },
+      { name: "Car", taboos: ["Drive","Road","Wheels","Engine"] },
+      { name: "Bus", taboos: ["Big","School","Seats","Driver"] },
+      { name: "Scooter", taboos: ["Ride","Wheels","Push","Handle"] },
+      { name: "Road", taboos: ["Cars","Street","Traffic","Drive"] },
+      { name: "Traffic light", taboos: ["Red","Green","Signal","Stop"] },
+      { name: "Bridge", taboos: ["River","Cross","Road","Over"] },
+      { name: "Park", taboos: ["Grass","Trees","Bench","Play"] },
+      { name: "Zoo", taboos: ["Animals","Cages","Visit","Keeper"] },
+
+      { name: "Lion", taboos: ["King","Jungle","Mane","Roar"] },
+      { name: "Elephant", taboos: ["Trunk","Big","Grey","Tusk"] },
+      { name: "Monkey", taboos: ["Banana","Climb","Tail","Jungle"] },
+      { name: "Giraffe", taboos: ["Tall","Neck","Spots","Zoo"] },
+      { name: "Rabbit", taboos: ["Ears","Hop","Carrot","Furry"] },
+      { name: "Fish", taboos: ["Water","Swim","Fins","Tank"] },
+      { name: "Butterfly", taboos: ["Wings","Colors","Fly","Garden"] },
+      { name: "Bird", taboos: ["Wings","Fly","Nest","Feathers"] },
+      { name: "Dolphin", taboos: ["Ocean","Swim","Jump","Smart"] },
+      { name: "Whale", taboos: ["Big","Ocean","Water","Blow"] },
+
+      { name: "Doctor", taboos: ["Hospital","Medicine","Sick","Nurse"] },
+      { name: "Nurse", taboos: ["Doctor","Hospital","Care","Medicine"] },
+      { name: "Police officer", taboos: ["Uniform","Law","Arrest","Station"] },
+      { name: "Firefighter", taboos: ["Fire","Truck","Hose","Rescue"] },
+      { name: "Chef", taboos: ["Cook","Kitchen","Food","Restaurant"] },
+      { name: "Artist", taboos: ["Paint","Draw","Colors","Picture"] },
+      { name: "Scientist", taboos: ["Lab","Experiment","Test","Study"] },
+      { name: "Astronaut", taboos: ["Space","Rocket","Moon","Suit"] },
+      { name: "Singer", taboos: ["Voice","Song","Music","Microphone"] },
+      { name: "Dancer", taboos: ["Dance","Stage","Music","Moves"] },
+
+      { name: "Movie", taboos: ["Film","Watch","Theatre","Actors"] },
+      { name: "Cartoon", taboos: ["TV","Funny","Characters","Draw"] },
+      { name: "Robot", taboos: ["Metal","Machine","Program","Automatic"] },
+      { name: "Dinosaur", taboos: ["Extinct","Big","Fossils","Jurassic"] },
+      { name: "Fairy", taboos: ["Wings","Magic","Dust","Tiny"] },
+      { name: "Princess", taboos: ["Castle","Crown","Royal","Dress"] },
+      { name: "Castle", taboos: ["King","Queen","Walls","Towers"] },
+      { name: "Magic", taboos: ["Tricks","Wand","Spells","Wizard"] },
+      { name: "Superhero", taboos: ["Powers","Cape","Save","Comic"] },
+      { name: "Treasure", taboos: ["Chest","Gold","Pirate","Map"] }
+    ];
+
+    // =============== 6-YEAR-OLD SIMPLE WORDS (NO TABOOS) ===============
+    const sixWords = [
+      "cat","dog","sun","moon","star","bed","bus","car","ball","doll",
+      "toy","book","pen","bag","hat","cap","cup","milk","cake","jam",
+      "egg","fish","bird","tree","leaf","rain","snow","park","swing","slide",
+      "top","red","blue","big","small","happy","sad","run","jump","walk",
+      "sit","stand","hand","foot","eye","nose","mouth","hair","face","home",
+      "school","class","desk","chair","friend","baby","sister","brother","grandma","grandpa"
+    ];
+
+    let currentMode = "nine"; // "nine" or "six"
+    let currentDeck = [];
+    let shuffled = [];
+    let index = 0;
+
+    function shuffle(array) {
+      const a = array.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function updateModeButtons() {
+      document.getElementById("mode-nine").classList.remove("active");
+      document.getElementById("mode-six").classList.remove("active");
+      if (currentMode === "nine") {
+        document.getElementById("mode-nine").classList.add("active");
+      } else {
+        document.getElementById("mode-six").classList.add("active");
+      }
+    }
+
+    function updateCard() {
+      const nameEl = document.getElementById("card-name");
+      const ul = document.getElementById("card-taboos");
+      const counterEl = document.getElementById("counter");
+      const noteEl = document.getElementById("note");
+
+      if (!shuffled || shuffled.length === 0) {
+        nameEl.textContent = "No cards.";
+        ul.innerHTML = "";
+        counterEl.textContent = "";
+        noteEl.textContent = "";
+        return;
+      }
+
+      if (currentMode === "nine") {
+        const card = shuffled[index];
+        nameEl.textContent = card.name;
+        ul.innerHTML = "";
+        card.taboos.forEach(t => {
+          const li = document.createElement("li");
+          li.textContent = t;
+          ul.appendChild(li);
+        });
+        noteEl.textContent = "Describe this word without saying any of the taboo words!";
+        counterEl.textContent = `Card ${index + 1} of ${shuffled.length}`;
+      } else {
+        const word = shuffled[index];
+        nameEl.textContent = word.toUpperCase();
+        ul.innerHTML = "";
+        noteEl.textContent = "Read this word aloud!";
+        counterEl.textContent = `Word ${index + 1} of ${shuffled.length}`;
+      }
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      if (mode === "nine") {
+        currentDeck = nineCards.slice();
+      } else {
+        currentDeck = sixWords.slice();
+      }
+      shuffled = shuffle(currentDeck);
+      index = 0;
+      updateModeButtons();
+      updateCard();
+    }
+
+    function nextCard() {
+      if (!shuffled || shuffled.length === 0) return;
+      index++;
+      if (index >= shuffled.length) {
+        shuffled = shuffle(currentDeck);
+        index = 0;
+      }
+      updateCard();
+    }
+
+    function prevCard() {
+      if (!shuffled || shuffled.length === 0) return;
+      index--;
+      if (index < 0) {
+        index = shuffled.length - 1;
+      }
+      updateCard();
+    }
+
+    window.addEventListener("load", () => {
+      document.getElementById("next-btn").addEventListener("click", nextCard);
+      document.getElementById("prev-btn").addEventListener("click", prevCard);
+      document.getElementById("mode-nine").addEventListener("click", () => setMode("nine"));
+      document.getElementById("mode-six").addEventListener("click", () => setMode("six"));
+
+      setMode("nine"); // start with 9-year-old Taboo
+    });
+  </script>
+</body>
+</html>
