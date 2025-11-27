@@ -136,6 +136,23 @@
       border-color: #f5c6cb;
       color: #c82333;
     }
+
+    .timer-buttons {
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .timer-buttons button {
+      padding: 6px 12px;
+      border-radius: 16px;
+      border: none;
+      background: #007aff;
+      color: #fff;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
@@ -163,6 +180,10 @@
 
     <div class="timer">
       <span id="timer-display">30 s</span>
+    </div>
+    <div class="timer-buttons">
+      <button id="start-timer-btn">Start Timer</button>
+      <button id="next-team-btn">Next Team's Turn</button>
     </div>
 
     <div class="footer">
@@ -290,7 +311,7 @@
       { name: "Karna", taboos: ["Kavach","Surya","Friendship","Suta"] }
     ];
 
-    // 9-year-old cards (from previous kids app)
+    // 9-year-old cards
     const nineCards = [
       { name: "Cat", taboos: ["Kitten","Meow","Whiskers","Pet"] },
       { name: "Dog", taboos: ["Puppy","Bark","Tail","Pet"] },
@@ -436,8 +457,9 @@
       if (mode === "mythology") return mythologyCards.slice();
       if (mode === "nine") return nineCards.slice();
       if (mode === "six") return sixWords.slice();
-      // all
-      return bollywoodCards.concat(mythologyCards, nineCards, sixWords.map(w => ({name:w, simple:true})));
+      // all: Bollywood + Mythology + 9-yr + 6-yr simple
+      const simpleSix = sixWords.map(w => ({ name: w, simple: true }));
+      return bollywoodCards.concat(mythologyCards, nineCards, simpleSix);
     }
 
     function updateModeButtons() {
@@ -471,14 +493,12 @@
       const item = shuffled[index];
 
       if (currentMode === "six" || item.simple) {
-        // simple mode: just one big word
         const word = item.name || item;
         nameEl.textContent = String(word).toUpperCase();
         ul.innerHTML = "";
         noteEl.textContent = "Read this word aloud!";
         counterEl.textContent = `Word ${index + 1} of ${shuffled.length}`;
       } else {
-        // taboo-style card
         const card = item;
         nameEl.textContent = card.name;
         ul.innerHTML = "";
@@ -506,16 +526,22 @@
       }
     }
 
+    function stopTimer() {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
     function startTimer() {
-      if (timerId) clearInterval(timerId);
-      timerSeconds = 30;
-      updateTimerDisplay();
+      // Do not reset seconds here.
+      // Only start if not running and time remaining > 0.
+      if (timerId || timerSeconds <= 0) return;
       timerId = setInterval(() => {
         timerSeconds--;
         if (timerSeconds <= 0) {
           timerSeconds = 0;
-          clearInterval(timerId);
-          timerId = null;
+          stopTimer();
         }
         updateTimerDisplay();
       }, 1000);
@@ -530,7 +556,7 @@
       index = 0;
       updateModeButtons();
       updateCard();
-      startTimer();
+      // Timer does NOT reset or start when changing mode
     }
 
     function nextCard() {
@@ -541,7 +567,7 @@
         index = 0;
       }
       updateCard();
-      startTimer();
+      // Timer does NOT reset here
     }
 
     function prevCard() {
@@ -549,7 +575,7 @@
       index--;
       if (index < 0) index = shuffled.length - 1;
       updateCard();
-      startTimer();
+      // Timer does NOT reset here
     }
 
     // =============== INIT ===============
@@ -564,7 +590,19 @@
       document.getElementById("mode-nine").addEventListener("click", () => setMode("nine"));
       document.getElementById("mode-six").addEventListener("click", () => setMode("six"));
 
-      setMode("all"); // start with mixed deck
+      document.getElementById("start-timer-btn").addEventListener("click", () => {
+        startTimer();  // doesn't reset; just starts if not running and >0
+      });
+
+      document.getElementById("next-team-btn").addEventListener("click", () => {
+        stopTimer();
+        timerSeconds = 30;   // reset to full 30 sec
+        updateTimerDisplay();
+      });
+
+      setMode("all");
+      timerSeconds = 30;
+      updateTimerDisplay();   // initial timer display
     });
   </script>
 </body>
