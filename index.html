@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Kids Taboo – 9 & 6 Years</title>
+  <title>Family Taboo Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -36,7 +36,7 @@
 
     .mode-select {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       justify-content: center;
       margin: 10px 0 20px;
       flex-wrap: wrap;
@@ -48,7 +48,7 @@
       border: 1px solid #007aff;
       background: white;
       color: #007aff;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .mode-select button.active {
@@ -114,17 +114,42 @@
       font-size: 11px;
       color: #777;
     }
+
+    .timer {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .timer span {
+      padding: 4px 10px;
+      border-radius: 16px;
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      display: inline-block;
+      min-width: 80px;
+    }
+
+    .timer span.red {
+      background: #f8d7da;
+      border-color: #f5c6cb;
+      color: #c82333;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Kids Word Game</h1>
+      <h1>Family Taboo Game</h1>
     </div>
 
     <div class="mode-select">
-      <button id="mode-nine" class="active">9-year-old Taboo</button>
-      <button id="mode-six">6-year-old Simple</button>
+      <button id="mode-all" class="active">All</button>
+      <button id="mode-bollywood">Bollywood</button>
+      <button id="mode-mythology">Mythology</button>
+      <button id="mode-nine">Kids 9+ Taboo</button>
+      <button id="mode-six">Kids 6+ Simple</button>
     </div>
 
     <div class="card">
@@ -136,6 +161,10 @@
       <div class="small" id="counter"></div>
     </div>
 
+    <div class="timer">
+      <span id="timer-display">30 s</span>
+    </div>
+
     <div class="footer">
       <button id="prev-btn">◀ Prev</button>
       <button id="next-btn">Next ▶</button>
@@ -143,7 +172,125 @@
   </div>
 
   <script>
-    // =============== 9-YEAR-OLD TABOO CARDS (100 words) ===============
+    // =============== DATA ===============
+
+    const bollywoodCards = [
+      { name: "Shah Rukh Khan", taboos: ["Bollywood","Romance","King Khan","DDLJ"] },
+      { name: "Naseeruddin Shah", taboos: ["Parallel cinema","A Wednesday","Theatre","Masoom"] },
+      { name: "Kamal Haasan", taboos: ["Tamil","Vishwaroopam","Actor-director","Nayakan"] },
+      { name: "Raj Kapoor", taboos: ["Showman","Charlie Chaplin","Mera Naam Joker","RK Films"] },
+      { name: "Govinda", taboos: ["Comedy","Dance","No. 1","David Dhawan"] },
+      { name: "Neelam", taboos: ["Govinda","Ilzaam","80s","Actress"] },
+      { name: "Kajol", taboos: ["SRK","DDLJ","K3G","Actress"] },
+      { name: "Raveena Tandon", taboos: ["Tip Tip","Akshay Kumar","90s","Mohra"] },
+      { name: "Anil Kapoor", taboos: ["Jhakaas","Slumdog","Mustache","Mr. India"] },
+      { name: "Sanjeev Kumar", taboos: ["Thakur","Sholay","Versatile","9 roles"] },
+      { name: "Dev Anand", taboos: ["Black coat","Guide","Evergreen","Navketan"] },
+      { name: "Amitabh Bachchan", taboos: ["Angry Young Man","KBC","Sholay","Big B"] },
+      { name: "Kareena Kapoor", taboos: ["Poo","Jab We Met","Saif","Kapoor family"] },
+      { name: "Irrfan Khan", taboos: ["Lunchbox","Hollywood","Talvar","Natural acting"] },
+      { name: "Akshay Kumar", taboos: ["Khiladi","Stunts","Comedy","Canada"] },
+      { name: "Rajesh Khanna", taboos: ["First Superstar","Anand","Aradhana","Kaka"] },
+      { name: "Aamir Khan", taboos: ["Perfectionist","Lagaan","3 Idiots","Dangal"] },
+      { name: "Salman Khan", taboos: ["Bhai","Dabangg","Being Human","Eid"] },
+      { name: "Sridevi", taboos: ["Chandni","Hawa Hawai","English Vinglish","Superstar"] },
+      { name: "Madhuri Dixit", taboos: ["Dhak Dhak","Dance","HAHK","Smile"] },
+      { name: "Tabu", taboos: ["Andhadhun","Haider","Talented","Serious roles"] },
+      { name: "Alia Bhatt", taboos: ["SOTY","Ranbir","Raazi","Young star"] },
+      { name: "Deepika Padukone", taboos: ["Padmavat","Ranveer","OSO","Tall"] },
+      { name: "Madhubala", taboos: ["Mughal-e-Azam","Beauty","Anarkali","Classic"] },
+      { name: "Hema Malini", taboos: ["Dream Girl","Basanti","Dharmendra","Actress"] },
+      { name: "Shabana Azmi", taboos: ["Art cinema","Fire","Parallel","Activist"] },
+      { name: "Smita Patil", taboos: ["Arth","Parallel cinema","Prakash Jha","Intense roles"] },
+      { name: "Meena Kumari", taboos: ["Tragedy Queen","Pakeezah","Ghazals","Melodrama"] },
+      { name: "Waheeda Rehman", taboos: ["Guide","Guru Dutt","Classical","Actress"] },
+      { name: "Rekha", taboos: ["Umrao Jaan","Evergreen","Glamour","Amitabh"] },
+      { name: "Sharmila Tagore", taboos: ["Kashmir Ki Kali","Tiger Pataudi","Bengali","Graceful"] },
+      { name: "Rani Mukerji", taboos: ["Black","Kajol cousin","Husky voice","90s"] },
+      { name: "Anupam Kher", taboos: ["Saaransh","Kher family","Actor","NSD"] },
+      { name: "Juhi Chawla", taboos: ["QSQT","Miss India","Comedy","Aamir"] },
+      { name: "Jaya Bachchan", taboos: ["Guddi","Amitabh","Politician","Mother roles"] },
+      { name: "Priyanka Chopra", taboos: ["Miss World","Quantico","Nick Jonas","Global star"] },
+      { name: "Aishwarya Rai", taboos: ["Miss World","Blue eyes","Devdas","Beauty"] },
+      { name: "Vidya Balan", taboos: ["Kahaani","Dirty Picture","Strong roles","National Award"] },
+      { name: "Kangana Ranaut", taboos: ["Queen","Controversy","National Award","Opinions"] },
+      { name: "Divya Bharti", taboos: ["Deewana","90s","Tragic","Rising star"] },
+      { name: "Meenakshi Seshadri", taboos: ["Damini","Dance","Hero","80s"] },
+      { name: "Manoj Bajpayee", taboos: ["Wasseypur","Family Man","Method","Satya"] },
+      { name: "Amrish Puri", taboos: ["Mogambo","Villain","Mr. India","Voice"] },
+      { name: "Nana Patekar", taboos: ["Krantiveer","Welcome","Intense","Dialogue"] },
+      { name: "Kader Khan", taboos: ["Writer","Comedy","Govinda","Dialogues"] },
+      { name: "Paresh Rawal", taboos: ["Hera Pheri","Baburao","Comedy","Akshay"] },
+      { name: "Om Puri", taboos: ["Serious","Ardh Satya","Hollywood","Parallel"] },
+      { name: "Dharmendra", taboos: ["He-Man","Sholay","Hema","Action"] },
+      { name: "Boman Irani", taboos: ["3 Idiots","Virus","Comedy-drama","Character"] },
+      { name: "Ashok Kumar", taboos: ["Dada Muni","Classics","Dynasty","40s"] },
+      { name: "Hrithik Roshan", taboos: ["Greek God","Krrish","Dance","2000"] },
+      { name: "Jackie Shroff", taboos: ["Bhidu","Hero","Tiger Shroff","80s"] },
+      { name: "Manoj Kumar", taboos: ["Bharat","Patriotic","Kranti","Director"] },
+      { name: "Shatrughan Sinha", taboos: ["Khamosh","Dialogue","Politician","70s"] },
+      { name: "Vinod Khanna", taboos: ["AAA","Handsome","Osho","Action"] },
+      { name: "Amol Palekar", taboos: ["Middle class","Golmaal","Simple","70s"] },
+      { name: "Sunny Deol", taboos: ["Dhai Kilo","Gadar","Action","Dialogues"] },
+      { name: "Raj Kumar", taboos: ["Jaani","Dialogue","Pakeezah","Voice"] },
+      { name: "Sanjay Dutt", taboos: ["Munna Bhai","Khalnayak","Drugs","Sanju"] },
+      { name: "Ranbir Kapoor", taboos: ["Rockstar","Alia","Kapoor family","Barfi"] }
+    ];
+
+    const mythologyCards = [
+      { name: "Rama", taboos: ["Ayodhya","Maryada Purushottam","Sita","Bow"] },
+      { name: "Ravana", taboos: ["Lanka","Ten heads","Shiva devotee","Brahmastra"] },
+      { name: "Sita", taboos: ["Abduction","Mithila","Agni Pariksha","Rama"] },
+      { name: "Lakshman", taboos: ["Exile","Lakshman Rekha","Bow","Rama"] },
+      { name: "Bharat", taboos: ["Paduka","Nandigram","Ayodhya","Younger brother"] },
+      { name: "Shatrughana", taboos: ["Twins","Kaikeyi","Younger","Brothers"] },
+      { name: "Kaushalya", taboos: ["Mother","Ayodhya","Queen","Rama"] },
+      { name: "Hanuman", taboos: ["Monkey","Sanjeevani","Strength","Devotion"] },
+      { name: "Sugreeva", taboos: ["Monkey king","Bali","Kishkindha","Alliance"] },
+      { name: "Meghnaad", taboos: ["Indrajit","Invisible","Serpents","Warrior"] },
+      { name: "Yudhishthira", taboos: ["Eldest","Dharma","Dice game","Rajasuya"] },
+      { name: "Bheem", taboos: ["Strength","Mace","Pandava","Rakshasa"] },
+      { name: "Arjun", taboos: ["Archer","Gandiva","Krishna","Kurukshetra"] },
+      { name: "Nakul", taboos: ["Handsome","Twins","Pandava","Sword"] },
+      { name: "Sahadev", taboos: ["Astrology","Twins","Pandava","Wisdom"] },
+      { name: "Duryodhana", taboos: ["Kaurava","Jealousy","Mace","Hastinapur"] },
+      { name: "Dushasana", taboos: ["Draupadi","Disrobing","Cruel","Kaurava"] },
+      { name: "Bheeshma Pitamah", taboos: ["Vow","Ganga","Bed of arrows","Kuru"] },
+      { name: "Dhritarashtra", taboos: ["Blind king","Kauravas","Gandhari","Throne"] },
+      { name: "Draupadi", taboos: ["Five husbands","Fire-born","Disrobing","Kurukshetra"] },
+      { name: "Krishna", taboos: ["Flute","Avatar","Mathura","Arjun"] },
+      { name: "Kansa", taboos: ["Mathura","Evil king","Krishna","Devaki"] },
+      { name: "Parashuraam", taboos: ["Axe","Brahmin warrior","Avatar","Kshatriya"] },
+      { name: "Shikhandi", taboos: ["Amba","Gender","Bhishma","Rebirth"] },
+      { name: "Kunti", taboos: ["Pandavas","Surya","Karna","Mother"] },
+      { name: "Shiva", taboos: ["Trishul","Kailash","Tandav","Mahadev"] },
+      { name: "Brahma", taboos: ["Creator","Four heads","Saraswati","Vedas"] },
+      { name: "Narad Muni", taboos: ["Veena","Messenger","Troublemaker","Sage"] },
+      { name: "Parvati", taboos: ["Shiva","Shakti","Himalaya","Goddess"] },
+      { name: "Durga Mata", taboos: ["Lion","Mahishasura","Nine forms","Weapons"] },
+      { name: "Lakshmi Ji", taboos: ["Wealth","Vishnu","Lotus","Diwali"] },
+      { name: "Ganesh Ji", taboos: ["Elephant head","Modak","Remover","Shiva/Parvati"] },
+      { name: "Vishnu Ji", taboos: ["Preserver","Avatars","Sheshnag","Vaikuntha"] },
+      { name: "Valmiki", taboos: ["Ramayana","Poet","Sage","Sanskrit"] },
+      { name: "Ved Vyas", taboos: ["Mahabharata","Vedas","Sage","Krishna Dvaipayana"] },
+      { name: "Saraswati Ji", taboos: ["Veena","Knowledge","White lotus","Vedas"] },
+      { name: "Indra Dev", taboos: ["Thunderbolt","Heaven","Rain","Airavat"] },
+      { name: "Agni Dev", taboos: ["Fire","Sacrifice","Flames","Rituals"] },
+      { name: "Surya Dev", taboos: ["Sun","Seven horses","Light","Chariot"] },
+      { name: "Varun Dev", taboos: ["Water","Oceans","Rain","Deity"] },
+      { name: "Yama", taboos: ["Death","Justice","Afterlife","Dharma"] },
+      { name: "Kaali Mata", taboos: ["Fierce","Dark form","Demons","Tongue"] },
+      { name: "Kartikeya", taboos: ["Spear","Peacock","War god","Brother"] },
+      { name: "Vaayu Dev", taboos: ["Wind","Air","Hanuman","Breath"] },
+      { name: "Prahlaad", taboos: ["Bhakti","Hiranyakashipu","Narasimha","Devotee"] },
+      { name: "Kama Dev", taboos: ["Love","Flower arrows","Rati","Desire"] },
+      { name: "Shakuntala", taboos: ["Dushyant","Ring","Kalidasa","Forest"] },
+      { name: "Vishwamitra", taboos: ["Sage","Menaka","Gayatri","Rivalry"] },
+      { name: "Dronacharya", taboos: ["Teacher","Archery","Pandavas","Kauravas"] },
+      { name: "Karna", taboos: ["Kavach","Surya","Friendship","Suta"] }
+    ];
+
+    // 9-year-old cards (from previous kids app)
     const nineCards = [
       { name: "Cat", taboos: ["Kitten","Meow","Whiskers","Pet"] },
       { name: "Dog", taboos: ["Puppy","Bark","Tail","Pet"] },
@@ -256,7 +403,6 @@
       { name: "Treasure", taboos: ["Chest","Gold","Pirate","Map"] }
     ];
 
-    // =============== 6-YEAR-OLD SIMPLE WORDS (NO TABOOS) ===============
     const sixWords = [
       "cat","dog","sun","moon","star","bed","bus","car","ball","doll",
       "toy","book","pen","bag","hat","cap","cup","milk","cake","jam",
@@ -266,10 +412,15 @@
       "school","class","desk","chair","friend","baby","sister","brother","grandma","grandpa"
     ];
 
-    let currentMode = "nine"; // "nine" or "six"
+    // =============== STATE & HELPERS ===============
+
+    let currentMode = "all"; // all, bollywood, mythology, nine, six
     let currentDeck = [];
     let shuffled = [];
     let index = 0;
+
+    let timerSeconds = 30;
+    let timerId = null;
 
     function shuffle(array) {
       const a = array.slice();
@@ -280,14 +431,27 @@
       return a;
     }
 
+    function buildDeck(mode) {
+      if (mode === "bollywood") return bollywoodCards.slice();
+      if (mode === "mythology") return mythologyCards.slice();
+      if (mode === "nine") return nineCards.slice();
+      if (mode === "six") return sixWords.slice();
+      // all
+      return bollywoodCards.concat(mythologyCards, nineCards, sixWords.map(w => ({name:w, simple:true})));
+    }
+
     function updateModeButtons() {
+      document.getElementById("mode-all").classList.remove("active");
+      document.getElementById("mode-bollywood").classList.remove("active");
+      document.getElementById("mode-mythology").classList.remove("active");
       document.getElementById("mode-nine").classList.remove("active");
       document.getElementById("mode-six").classList.remove("active");
-      if (currentMode === "nine") {
-        document.getElementById("mode-nine").classList.add("active");
-      } else {
-        document.getElementById("mode-six").classList.add("active");
-      }
+
+      if (currentMode === "bollywood") document.getElementById("mode-bollywood").classList.add("active");
+      else if (currentMode === "mythology") document.getElementById("mode-mythology").classList.add("active");
+      else if (currentMode === "nine") document.getElementById("mode-nine").classList.add("active");
+      else if (currentMode === "six") document.getElementById("mode-six").classList.add("active");
+      else document.getElementById("mode-all").classList.add("active");
     }
 
     function updateCard() {
@@ -304,8 +468,18 @@
         return;
       }
 
-      if (currentMode === "nine") {
-        const card = shuffled[index];
+      const item = shuffled[index];
+
+      if (currentMode === "six" || item.simple) {
+        // simple mode: just one big word
+        const word = item.name || item;
+        nameEl.textContent = String(word).toUpperCase();
+        ul.innerHTML = "";
+        noteEl.textContent = "Read this word aloud!";
+        counterEl.textContent = `Word ${index + 1} of ${shuffled.length}`;
+      } else {
+        // taboo-style card
+        const card = item;
         nameEl.textContent = card.name;
         ul.innerHTML = "";
         card.taboos.forEach(t => {
@@ -315,26 +489,48 @@
         });
         noteEl.textContent = "Describe this word without saying any of the taboo words!";
         counterEl.textContent = `Card ${index + 1} of ${shuffled.length}`;
-      } else {
-        const word = shuffled[index];
-        nameEl.textContent = word.toUpperCase();
-        ul.innerHTML = "";
-        noteEl.textContent = "Read this word aloud!";
-        counterEl.textContent = `Word ${index + 1} of ${shuffled.length}`;
       }
     }
 
+    // =============== TIMER ===============
+
+    function updateTimerDisplay() {
+      const el = document.getElementById("timer-display");
+      if (timerSeconds <= 0) {
+        el.textContent = "TIME UP!";
+        el.classList.add("red");
+      } else {
+        el.textContent = timerSeconds + " s";
+        if (timerSeconds <= 5) el.classList.add("red");
+        else el.classList.remove("red");
+      }
+    }
+
+    function startTimer() {
+      if (timerId) clearInterval(timerId);
+      timerSeconds = 30;
+      updateTimerDisplay();
+      timerId = setInterval(() => {
+        timerSeconds--;
+        if (timerSeconds <= 0) {
+          timerSeconds = 0;
+          clearInterval(timerId);
+          timerId = null;
+        }
+        updateTimerDisplay();
+      }, 1000);
+    }
+
+    // =============== ACTIONS ===============
+
     function setMode(mode) {
       currentMode = mode;
-      if (mode === "nine") {
-        currentDeck = nineCards.slice();
-      } else {
-        currentDeck = sixWords.slice();
-      }
+      currentDeck = buildDeck(mode);
       shuffled = shuffle(currentDeck);
       index = 0;
       updateModeButtons();
       updateCard();
+      startTimer();
     }
 
     function nextCard() {
@@ -345,24 +541,30 @@
         index = 0;
       }
       updateCard();
+      startTimer();
     }
 
     function prevCard() {
       if (!shuffled || shuffled.length === 0) return;
       index--;
-      if (index < 0) {
-        index = shuffled.length - 1;
-      }
+      if (index < 0) index = shuffled.length - 1;
       updateCard();
+      startTimer();
     }
+
+    // =============== INIT ===============
 
     window.addEventListener("load", () => {
       document.getElementById("next-btn").addEventListener("click", nextCard);
       document.getElementById("prev-btn").addEventListener("click", prevCard);
+
+      document.getElementById("mode-all").addEventListener("click", () => setMode("all"));
+      document.getElementById("mode-bollywood").addEventListener("click", () => setMode("bollywood"));
+      document.getElementById("mode-mythology").addEventListener("click", () => setMode("mythology"));
       document.getElementById("mode-nine").addEventListener("click", () => setMode("nine"));
       document.getElementById("mode-six").addEventListener("click", () => setMode("six"));
 
-      setMode("nine"); // start with 9-year-old Taboo
+      setMode("all"); // start with mixed deck
     });
   </script>
 </body>
