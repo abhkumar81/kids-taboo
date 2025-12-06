@@ -213,31 +213,8 @@
     <div id="home-screen" class="screen">
       <div class="section-box">
         <h2>1. Choose categories</h2>
-        <ul class="options-list">
-          <li>
-            <label>
-              <input type="checkbox" id="cat-bollywood" checked>
-              Bollywood
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" id="cat-mythology" checked>
-              Mythology
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" id="cat-nine" checked>
-              Kids 9+ Taboo
-            </label>
-          </li>
-          <li>
-            <label>
-              <input type="checkbox" id="cat-six">
-              Kids 6+ Simple
-            </label>
-          </li>
+        <ul id="category-list" class="options-list">
+          <!-- Populated dynamically from CATEGORIES -->
         </ul>
       </div>
 
@@ -322,7 +299,7 @@
   </div>
 
   <script>
-    // ---------- DATA ----------
+    // ---------- RAW CARD DATA ----------
 
     const bollywoodCards = [
       { name: "Shah Rukh Khan", taboos: ["Bollywood","Romance","King Khan","DDLJ"] },
@@ -561,6 +538,44 @@
       "school","class","desk","chair","friend","baby","sister","brother","grandma","grandpa"
     ];
 
+    // ---------- CATEGORY REGISTRY ----------
+    // To add a new category (e.g. "cityNames"), just add another entry here.
+    // The UI and game logic will pick it up automatically.
+
+    const CATEGORIES = {
+      bollywood: {
+        label: "Bollywood",
+        defaultChecked: true,
+        cards: bollywoodCards
+      },
+      mythology: {
+        label: "Mythology",
+        defaultChecked: true,
+        cards: mythologyCards
+      },
+      kids9: {
+        label: "Kids 9+ Taboo",
+        defaultChecked: true,
+        cards: nineCards
+      },
+      kids6: {
+        label: "Kids 6+ Simple",
+        defaultChecked: false,
+        cards: sixWords.map(w => ({ name: w, simple: true }))
+      }
+
+      // Example of adding a new category later:
+      // cityNames: {
+      //   label: "City Names",
+      //   defaultChecked: false,
+      //   cards: [
+      //     { name: "Houston", simple: true },
+      //     { name: "Mumbai", simple: true },
+      //     { name: "Tokyo", simple: true }
+      //   ]
+      // }
+    };
+
     // ---------- STATE ----------
 
     let selectedCategories = [];
@@ -594,21 +609,14 @@
 
     function buildDeckFromSelections() {
       let d = [];
-      if (selectedCategories.includes("bollywood")) d = d.concat(bollywoodCards);
-      if (selectedCategories.includes("mythology")) d = d.concat(mythologyCards);
-      if (selectedCategories.includes("nine")) d = d.concat(nineCards);
-      if (selectedCategories.includes("six")) {
-        d = d.concat(sixWords.map(w => ({ name: w, simple: true })));
+      for (const key of selectedCategories) {
+        const cat = CATEGORIES[key];
+        if (cat && Array.isArray(cat.cards)) {
+          d = d.concat(cat.cards);
+        }
       }
       return d;
     }
-
-    const categoryLabels = {
-      bollywood: "Bollywood",
-      mythology: "Mythology",
-      nine: "Kids 9+ Taboo",
-      six: "Kids 6+ Simple"
-    };
 
     function updateCard() {
       const nameEl = document.getElementById("card-name");
@@ -741,10 +749,12 @@
 
     function fromHomeToConfirm() {
       selectedCategories = [];
-      if (document.getElementById("cat-bollywood").checked) selectedCategories.push("bollywood");
-      if (document.getElementById("cat-mythology").checked) selectedCategories.push("mythology");
-      if (document.getElementById("cat-nine").checked) selectedCategories.push("nine");
-      if (document.getElementById("cat-six").checked) selectedCategories.push("six");
+      const checkboxes = document.querySelectorAll('#category-list input[type="checkbox"]');
+      checkboxes.forEach(cb => {
+        if (cb.checked && cb.dataset.categoryKey) {
+          selectedCategories.push(cb.dataset.categoryKey);
+        }
+      });
 
       if (selectedCategories.length === 0) {
         alert("Please select at least one category.");
@@ -761,7 +771,7 @@
         timerDuration = parseInt(val, 10);
       }
 
-      const catNames = selectedCategories.map(c => categoryLabels[c]);
+      const catNames = selectedCategories.map(c => CATEGORIES[c].label);
       document.getElementById("confirm-categories").textContent = catNames.join(", ");
 
       const timerText = timerEnabled ? (timerDuration + " seconds") : "No timer";
@@ -782,7 +792,7 @@
       index = 0;
       roundAttempts = deck.length > 0 ? 1 : 0;
 
-      const catNames = selectedCategories.map(c => categoryLabels[c]).join(", ");
+      const catNames = selectedCategories.map(c => CATEGORIES[c].label).join(", ");
       const timerText = timerEnabled ? (timerDuration + " seconds") : "No timer";
       document.getElementById("game-summary").textContent =
         "Categories: " + catNames + " | Timer: " + timerText;
@@ -847,9 +857,31 @@
       startNewRound(true);
     }
 
+    // ---------- INIT UI FROM CATEGORY REGISTRY ----------
+
+    function buildCategoryCheckboxes() {
+      const list = document.getElementById("category-list");
+      list.innerHTML = "";
+      for (const [key, cat] of Object.entries(CATEGORIES)) {
+        const li = document.createElement("li");
+        const label = document.createElement("label");
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.id = "cat-" + key;
+        cb.dataset.categoryKey = key;
+        cb.checked = !!cat.defaultChecked;
+        label.appendChild(cb);
+        label.appendChild(document.createTextNode(" " + cat.label));
+        li.appendChild(label);
+        list.appendChild(li);
+      }
+    }
+
     // ---------- INIT ----------
 
     window.addEventListener("load", () => {
+      buildCategoryCheckboxes();
+
       document.getElementById("home-btn").addEventListener("click", goHome);
 
       document.getElementById("home-continue").addEventListener("click", fromHomeToConfirm);
