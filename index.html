@@ -19,41 +19,30 @@
     }
 
     .container {
-      margin-top: 20px;
+      margin-top: 10px;
       width: 95%;
-      max-width: 480px;
+      max-width: 520px;
     }
 
-    .header {
-      text-align: center;
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 10px;
     }
 
-    .header h1 {
-      font-size: 22px;
+    .top-bar h1 {
+      font-size: 20px;
       margin: 0;
     }
 
-    .mode-select {
-      display: flex;
-      gap: 6px;
-      justify-content: center;
-      margin: 10px 0 20px;
-      flex-wrap: wrap;
-    }
-
-    .mode-select button {
+    .home-btn {
       padding: 6px 10px;
       border-radius: 16px;
       border: 1px solid #007aff;
       background: white;
       color: #007aff;
       font-size: 12px;
-    }
-
-    .mode-select button.active {
-      background: #007aff;
-      color: white;
     }
 
     .card {
@@ -92,11 +81,19 @@
       margin-top: 4px;
     }
 
+    .small {
+      text-align: center;
+      margin-top: 6px;
+      font-size: 12px;
+      color: #777;
+    }
+
     .footer {
       margin-top: 16px;
       display: flex;
       justify-content: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     .footer button {
@@ -106,13 +103,6 @@
       background: #ff2d55;
       color: #fff;
       font-size: 16px;
-    }
-
-    .small {
-      text-align: center;
-      margin-top: 6px;
-      font-size: 11px;
-      color: #777;
     }
 
     .timer {
@@ -153,47 +143,187 @@
       color: #fff;
       font-size: 13px;
     }
+
+    .screen {
+      margin-top: 8px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .section-box {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .section-box h2 {
+      font-size: 18px;
+      margin-top: 0;
+    }
+
+    .options-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .options-list li {
+      margin: 4px 0;
+    }
+
+    .btn-primary {
+      padding: 10px 18px;
+      border-radius: 20px;
+      border: none;
+      background: #007aff;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .btn-secondary {
+      padding: 8px 14px;
+      border-radius: 18px;
+      border: 1px solid #007aff;
+      background: white;
+      color: #007aff;
+      font-size: 14px;
+    }
+
+    .game-summary {
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 10px;
+      color: #555;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
+    <div class="top-bar">
       <h1>Family Taboo Game</h1>
+      <button id="home-btn" class="home-btn">Home</button>
     </div>
 
-    <div class="mode-select">
-      <button id="mode-all" class="active">All</button>
-      <button id="mode-bollywood">Bollywood</button>
-      <button id="mode-mythology">Mythology</button>
-      <button id="mode-nine">Kids 9+ Taboo</button>
-      <button id="mode-six">Kids 6+ Simple</button>
-    </div>
-
-    <div class="card">
-      <div>
-        <div id="card-name" class="name">Loading…</div>
-        <ul id="card-taboos" class="taboos"></ul>
-        <div id="note" class="note"></div>
+    <!-- HOME SCREEN -->
+    <div id="home-screen" class="screen">
+      <div class="section-box">
+        <h2>1. Choose categories</h2>
+        <ul class="options-list">
+          <li>
+            <label>
+              <input type="checkbox" id="cat-bollywood" checked>
+              Bollywood
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" id="cat-mythology" checked>
+              Mythology
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" id="cat-nine" checked>
+              Kids 9+ Taboo
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="checkbox" id="cat-six">
+              Kids 6+ Simple
+            </label>
+          </li>
+        </ul>
       </div>
-      <div class="small" id="counter"></div>
+
+      <div class="section-box">
+        <h2>2. Timer settings</h2>
+        <ul class="options-list">
+          <li>
+            <label>
+              <input type="radio" name="timer-option" value="none" checked>
+              No timer
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="timer-option" value="30">
+              Timer: 30 seconds
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="timer-option" value="45">
+              Timer: 45 seconds
+            </label>
+          </li>
+          <li>
+            <label>
+              <input type="radio" name="timer-option" value="60">
+              Timer: 60 seconds
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div style="text-align:center; margin-top: 10px;">
+        <button id="home-continue" class="btn-primary">Continue</button>
+      </div>
     </div>
 
-    <div class="timer">
-      <span id="timer-display">30 s</span>
-    </div>
-    <div class="timer-buttons">
-      <button id="start-timer-btn">Start Timer</button>
-      <button id="next-team-btn">Next Team's Turn</button>
+    <!-- CONFIRM SCREEN -->
+    <div id="confirm-screen" class="screen hidden">
+      <div class="section-box">
+        <h2>Confirm your game</h2>
+        <p><strong>Categories:</strong> <span id="confirm-categories"></span></p>
+        <p><strong>Timer:</strong> <span id="confirm-timer"></span></p>
+      </div>
+
+      <div style="text-align:center; margin-top: 10px;">
+        <button id="confirm-back" class="btn-secondary">Back</button>
+        <button id="confirm-start" class="btn-primary">Start Game</button>
+      </div>
     </div>
 
-    <div class="footer">
-      <button id="prev-btn">◀ Prev</button>
-      <button id="next-btn">Next ▶</button>
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="screen hidden">
+      <div id="game-summary" class="game-summary"></div>
+
+      <div class="card">
+        <div>
+          <div id="card-name" class="name">Loading…</div>
+          <ul id="card-taboos" class="taboos"></ul>
+          <div id="note" class="note"></div>
+        </div>
+        <div class="small" id="counter"></div>
+      </div>
+
+      <div id="timer-section" class="hidden">
+        <div class="timer">
+          <span id="timer-display">30 s</span>
+        </div>
+        <div class="timer-buttons">
+          <button id="start-timer-btn">Start Timer</button>
+          <button id="next-team-btn">Next Team's Turn</button>
+        </div>
+      </div>
+
+      <div id="attempts-display" class="small" style="margin-top:8px;"></div>
+
+      <div class="footer">
+        <button id="prev-btn">◀ Prev</button>
+        <button id="next-btn">Next ▶</button>
+      </div>
     </div>
   </div>
 
   <script>
-    // =============== DATA ===============
+    // ---------- DATA ----------
 
     const bollywoodCards = [
       { name: "Shah Rukh Khan", taboos: ["Bollywood","Romance","King Khan","DDLJ"] },
@@ -311,7 +441,6 @@
       { name: "Karna", taboos: ["Kavach","Surya","Friendship","Suta"] }
     ];
 
-    // 9-year-old cards
     const nineCards = [
       { name: "Cat", taboos: ["Kitten","Meow","Whiskers","Pet"] },
       { name: "Dog", taboos: ["Puppy","Bark","Tail","Pet"] },
@@ -433,15 +562,20 @@
       "school","class","desk","chair","friend","baby","sister","brother","grandma","grandpa"
     ];
 
-    // =============== STATE & HELPERS ===============
+    // ---------- STATE ----------
 
-    let currentMode = "all"; // all, bollywood, mythology, nine, six
-    let currentDeck = [];
+    let selectedCategories = [];
+    let timerEnabled = false;
+    let timerDuration = 0;
+    let timerSeconds = 0;
+    let timerId = null;
+
+    let deck = [];
     let shuffled = [];
     let index = 0;
+    let roundAttempts = 0;
 
-    let timerSeconds = 30;
-    let timerId = null;
+    // ---------- HELPERS ----------
 
     function shuffle(array) {
       const a = array.slice();
@@ -452,29 +586,30 @@
       return a;
     }
 
-    function buildDeck(mode) {
-      if (mode === "bollywood") return bollywoodCards.slice();
-      if (mode === "mythology") return mythologyCards.slice();
-      if (mode === "nine") return nineCards.slice();
-      if (mode === "six") return sixWords.slice();
-      // all: Bollywood + Mythology + 9-yr + 6-yr simple
-      const simpleSix = sixWords.map(w => ({ name: w, simple: true }));
-      return bollywoodCards.concat(mythologyCards, nineCards, simpleSix);
+    function showScreen(name) {
+      document.getElementById("home-screen").classList.add("hidden");
+      document.getElementById("confirm-screen").classList.add("hidden");
+      document.getElementById("game-screen").classList.add("hidden");
+      document.getElementById(name + "-screen").classList.remove("hidden");
     }
 
-    function updateModeButtons() {
-      document.getElementById("mode-all").classList.remove("active");
-      document.getElementById("mode-bollywood").classList.remove("active");
-      document.getElementById("mode-mythology").classList.remove("active");
-      document.getElementById("mode-nine").classList.remove("active");
-      document.getElementById("mode-six").classList.remove("active");
-
-      if (currentMode === "bollywood") document.getElementById("mode-bollywood").classList.add("active");
-      else if (currentMode === "mythology") document.getElementById("mode-mythology").classList.add("active");
-      else if (currentMode === "nine") document.getElementById("mode-nine").classList.add("active");
-      else if (currentMode === "six") document.getElementById("mode-six").classList.add("active");
-      else document.getElementById("mode-all").classList.add("active");
+    function buildDeckFromSelections() {
+      let d = [];
+      if (selectedCategories.includes("bollywood")) d = d.concat(bollywoodCards);
+      if (selectedCategories.includes("mythology")) d = d.concat(mythologyCards);
+      if (selectedCategories.includes("nine")) d = d.concat(nineCards);
+      if (selectedCategories.includes("six")) {
+        d = d.concat(sixWords.map(w => ({ name: w, simple: true })));
+      }
+      return d;
     }
+
+    const categoryLabels = {
+      bollywood: "Bollywood",
+      mythology: "Mythology",
+      nine: "Kids 9+ Taboo",
+      six: "Kids 6+ Simple"
+    };
 
     function updateCard() {
       const nameEl = document.getElementById("card-name");
@@ -492,8 +627,8 @@
 
       const item = shuffled[index];
 
-      if (currentMode === "six" || item.simple) {
-        const word = item.name || item;
+      if (item.simple) {
+        const word = item.name;
         nameEl.textContent = String(word).toUpperCase();
         ul.innerHTML = "";
         noteEl.textContent = "Read this word aloud!";
@@ -512,9 +647,13 @@
       }
     }
 
-    // =============== TIMER ===============
+    function updateAttemptsDisplay() {
+      const el = document.getElementById("attempts-display");
+      el.textContent = "Words attempted this round: " + roundAttempts;
+    }
 
     function updateTimerDisplay() {
+      if (!timerEnabled) return;
       const el = document.getElementById("timer-display");
       if (timerSeconds <= 0) {
         el.textContent = "TIME UP!";
@@ -533,76 +672,169 @@
       }
     }
 
+    function onTimeUp() {
+      stopTimer();
+      timerSeconds = 0;
+      updateTimerDisplay();
+      document.getElementById("next-btn").disabled = true;
+      document.getElementById("prev-btn").disabled = true;
+
+      const noteEl = document.getElementById("note");
+      noteEl.textContent = "Time is up! Words attempted this round: " + roundAttempts;
+    }
+
     function startTimer() {
-      // Do not reset seconds here.
-      // Only start if not running and time remaining > 0.
+      if (!timerEnabled) return;
       if (timerId || timerSeconds <= 0) return;
       timerId = setInterval(() => {
         timerSeconds--;
         if (timerSeconds <= 0) {
-          timerSeconds = 0;
-          stopTimer();
+          onTimeUp();
+        } else {
+          updateTimerDisplay();
         }
-        updateTimerDisplay();
       }, 1000);
     }
 
-    // =============== ACTIONS ===============
-
-    function setMode(mode) {
-      currentMode = mode;
-      currentDeck = buildDeck(mode);
-      shuffled = shuffle(currentDeck);
-      index = 0;
-      updateModeButtons();
+    function startNewRound(reshuffle) {
+      if (reshuffle) {
+        shuffled = shuffle(deck);
+        index = 0;
+      }
+      roundAttempts = deck.length > 0 ? 1 : 0;
       updateCard();
-      // Timer does NOT reset or start when changing mode
+      updateAttemptsDisplay();
+      if (timerEnabled) {
+        stopTimer();
+        timerSeconds = timerDuration;
+        updateTimerDisplay();
+        document.getElementById("timer-display").classList.remove("red");
+      }
+      document.getElementById("next-btn").disabled = false;
+      document.getElementById("prev-btn").disabled = false;
+    }
+
+    // ---------- ACTIONS ----------
+
+    function goHome() {
+      stopTimer();
+      showScreen("home");
+    }
+
+    function fromHomeToConfirm() {
+      selectedCategories = [];
+      if (document.getElementById("cat-bollywood").checked) selectedCategories.push("bollywood");
+      if (document.getElementById("cat-mythology").checked) selectedCategories.push("mythology");
+      if (document.getElementById("cat-nine").checked) selectedCategories.push("nine");
+      if (document.getElementById("cat-six").checked) selectedCategories.push("six");
+
+      if (selectedCategories.length === 0) {
+        alert("Please select at least one category.");
+        return;
+      }
+
+      const timerRadio = document.querySelector('input[name="timer-option"]:checked');
+      const val = timerRadio ? timerRadio.value : "none";
+      if (val === "none") {
+        timerEnabled = false;
+        timerDuration = 0;
+      } else {
+        timerEnabled = true;
+        timerDuration = parseInt(val, 10);
+      }
+
+      const catNames = selectedCategories.map(c => categoryLabels[c]);
+      document.getElementById("confirm-categories").textContent = catNames.join(", ");
+
+      const timerText = timerEnabled ? (timerDuration + " seconds") : "No timer";
+      document.getElementById("confirm-timer").textContent = timerText;
+
+      showScreen("confirm");
+    }
+
+    function startGameFromConfirm() {
+      deck = buildDeckFromSelections();
+      if (deck.length === 0) {
+        alert("No cards found for selected categories.");
+        goHome();
+        return;
+      }
+
+      shuffled = shuffle(deck);
+      index = 0;
+      roundAttempts = deck.length > 0 ? 1 : 0;
+
+      const catNames = selectedCategories.map(c => categoryLabels[c]).join(", ");
+      const timerText = timerEnabled ? (timerDuration + " seconds") : "No timer";
+      document.getElementById("game-summary").textContent =
+        "Categories: " + catNames + " | Timer: " + timerText;
+
+      // Timer section visibility
+      const timerSection = document.getElementById("timer-section");
+      if (timerEnabled) {
+        timerSection.classList.remove("hidden");
+        timerSeconds = timerDuration;
+        updateTimerDisplay();
+      } else {
+        timerSection.classList.add("hidden");
+        stopTimer();
+      }
+
+      updateCard();
+      updateAttemptsDisplay();
+      document.getElementById("next-btn").disabled = false;
+      document.getElementById("prev-btn").disabled = false;
+
+      showScreen("game");
     }
 
     function nextCard() {
       if (!shuffled || shuffled.length === 0) return;
+      if (document.getElementById("next-btn").disabled) return;
+
       index++;
       if (index >= shuffled.length) {
-        shuffled = shuffle(currentDeck);
+        shuffled = shuffle(deck);
         index = 0;
       }
       updateCard();
-      // Timer does NOT reset here
+      if (deck.length > 0) {
+        roundAttempts++;
+        updateAttemptsDisplay();
+      }
     }
 
     function prevCard() {
       if (!shuffled || shuffled.length === 0) return;
+      if (document.getElementById("prev-btn").disabled) return;
+
       index--;
       if (index < 0) index = shuffled.length - 1;
       updateCard();
-      // Timer does NOT reset here
+      // attempts not changed on prev
     }
 
-    // =============== INIT ===============
+    function nextTeamTurn() {
+      if (!timerEnabled) return;
+      startNewRound(true);
+    }
+
+    // ---------- INIT ----------
 
     window.addEventListener("load", () => {
+      document.getElementById("home-btn").addEventListener("click", goHome);
+
+      document.getElementById("home-continue").addEventListener("click", fromHomeToConfirm);
+      document.getElementById("confirm-back").addEventListener("click", () => showScreen("home"));
+      document.getElementById("confirm-start").addEventListener("click", startGameFromConfirm);
+
       document.getElementById("next-btn").addEventListener("click", nextCard);
       document.getElementById("prev-btn").addEventListener("click", prevCard);
 
-      document.getElementById("mode-all").addEventListener("click", () => setMode("all"));
-      document.getElementById("mode-bollywood").addEventListener("click", () => setMode("bollywood"));
-      document.getElementById("mode-mythology").addEventListener("click", () => setMode("mythology"));
-      document.getElementById("mode-nine").addEventListener("click", () => setMode("nine"));
-      document.getElementById("mode-six").addEventListener("click", () => setMode("six"));
+      document.getElementById("start-timer-btn").addEventListener("click", startTimer);
+      document.getElementById("next-team-btn").addEventListener("click", nextTeamTurn);
 
-      document.getElementById("start-timer-btn").addEventListener("click", () => {
-        startTimer();  // doesn't reset; just starts if not running and >0
-      });
-
-      document.getElementById("next-team-btn").addEventListener("click", () => {
-        stopTimer();
-        timerSeconds = 30;   // reset to full 30 sec
-        updateTimerDisplay();
-      });
-
-      setMode("all");
-      timerSeconds = 30;
-      updateTimerDisplay();   // initial timer display
+      goHome();
     });
   </script>
 </body>
