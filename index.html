@@ -308,14 +308,13 @@
           <span id="timer-display">30 s</span>
         </div>
         <div class="timer-buttons">
-          <button id="start-timer-btn">Start Timer</button>
           <button id="next-team-btn">Next Team's Turn</button>
         </div>
       </div>
 
       <div id="attempts-display" class="small" style="margin-top:8px;"></div>
 
-      <div class="footer">
+      <div class="footer" id="nav-buttons">
         <button id="prev-btn">◀ Prev</button>
         <button id="next-btn">Next ▶</button>
       </div>
@@ -676,8 +675,16 @@
       stopTimer();
       timerSeconds = 0;
       updateTimerDisplay();
-      document.getElementById("next-btn").disabled = true;
-      document.getElementById("prev-btn").disabled = true;
+
+      const nextBtn = document.getElementById("next-btn");
+      const prevBtn = document.getElementById("prev-btn");
+      const navButtons = document.getElementById("nav-buttons");
+      const nextTeamBtn = document.getElementById("next-team-btn");
+
+      nextBtn.disabled = true;
+      prevBtn.disabled = true;
+      navButtons.style.display = "none";  // hide Prev/Next
+      nextTeamBtn.style.display = "inline-block"; // show next team button
 
       const noteEl = document.getElementById("note");
       noteEl.textContent = "Time is up! Words attempted this round: " + roundAttempts;
@@ -697,21 +704,32 @@
     }
 
     function startNewRound(reshuffle) {
+      const nextBtn = document.getElementById("next-btn");
+      const prevBtn = document.getElementById("prev-btn");
+      const navButtons = document.getElementById("nav-buttons");
+      const nextTeamBtn = document.getElementById("next-team-btn");
+
       if (reshuffle) {
         shuffled = shuffle(deck);
         index = 0;
       }
+
       roundAttempts = deck.length > 0 ? 1 : 0;
       updateCard();
       updateAttemptsDisplay();
+
       if (timerEnabled) {
         stopTimer();
         timerSeconds = timerDuration;
-        updateTimerDisplay();
         document.getElementById("timer-display").classList.remove("red");
+        updateTimerDisplay();
+        startTimer(); // auto-start for each team
       }
-      document.getElementById("next-btn").disabled = false;
-      document.getElementById("prev-btn").disabled = false;
+
+      nextBtn.disabled = false;
+      prevBtn.disabled = false;
+      navButtons.style.display = "flex";
+      nextTeamBtn.style.display = "none";
     }
 
     // ---------- ACTIONS ----------
@@ -769,12 +787,19 @@
       document.getElementById("game-summary").textContent =
         "Categories: " + catNames + " | Timer: " + timerText;
 
-      // Timer section visibility
       const timerSection = document.getElementById("timer-section");
+      const nextTeamBtn = document.getElementById("next-team-btn");
+      const navButtons = document.getElementById("nav-buttons");
+      const nextBtn = document.getElementById("next-btn");
+      const prevBtn = document.getElementById("prev-btn");
+
       if (timerEnabled) {
         timerSection.classList.remove("hidden");
+        nextTeamBtn.style.display = "none"; // hidden until time up
         timerSeconds = timerDuration;
+        document.getElementById("timer-display").classList.remove("red");
         updateTimerDisplay();
+        startTimer(); // auto-start on game start
       } else {
         timerSection.classList.add("hidden");
         stopTimer();
@@ -782,15 +807,17 @@
 
       updateCard();
       updateAttemptsDisplay();
-      document.getElementById("next-btn").disabled = false;
-      document.getElementById("prev-btn").disabled = false;
+      nextBtn.disabled = false;
+      prevBtn.disabled = false;
+      navButtons.style.display = "flex";
 
       showScreen("game");
     }
 
     function nextCard() {
       if (!shuffled || shuffled.length === 0) return;
-      if (document.getElementById("next-btn").disabled) return;
+      const nextBtn = document.getElementById("next-btn");
+      if (nextBtn.disabled) return;
 
       index++;
       if (index >= shuffled.length) {
@@ -806,7 +833,8 @@
 
     function prevCard() {
       if (!shuffled || shuffled.length === 0) return;
-      if (document.getElementById("prev-btn").disabled) return;
+      const prevBtn = document.getElementById("prev-btn");
+      if (prevBtn.disabled) return;
 
       index--;
       if (index < 0) index = shuffled.length - 1;
@@ -831,7 +859,6 @@
       document.getElementById("next-btn").addEventListener("click", nextCard);
       document.getElementById("prev-btn").addEventListener("click", prevCard);
 
-      document.getElementById("start-timer-btn").addEventListener("click", startTimer);
       document.getElementById("next-team-btn").addEventListener("click", nextTeamTurn);
 
       goHome();
