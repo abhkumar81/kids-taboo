@@ -418,125 +418,169 @@
     ];
 
     const nineCards = [
-      { name: "Cat", taboos: ["Kitten","Meow","Whiskers","Pet"] },
-      { name: "Dog", taboos: ["Puppy","Bark","Tail","Pet"] },
-      { name: "School", taboos: ["Classroom","Teacher","Study","Students"] },
-      { name: "Teacher", taboos: ["School","Class","Homework","Student"] },
-      { name: "Friend", taboos: ["Best","Play","Buddy","Together"] },
-      { name: "Pizza", taboos: ["Cheese","Slice","Toppings","Crust"] },
-      { name: "Ice cream", taboos: ["Cold","Scoop","Cone","Dessert"] },
-      { name: "Birthday", taboos: ["Cake","Party","Candles","Gifts"] },
-      { name: "Cake", taboos: ["Frosting","Candles","Sweet","Birthday"] },
-      { name: "Rainbow", taboos: ["Colors","Sky","Rain","Arc"] },
+  // Home & School (1–10)
+  { name: "Cat", taboos: ["Kitten","Meow","Whiskers","Pet"] },
+  { name: "Dog", taboos: ["Puppy","Bark","Tail","Pet"] },
+  { name: "School", taboos: ["Classroom","Teacher","Students","Study"] },
+  { name: "Teacher", taboos: ["School","Class","Homework","Student"] },
+  { name: "Friend", taboos: ["Best","Play","Buddy","Together"] },
+  { name: "Pencil", taboos: ["Write","Sharp","Lead","Eraser"] },
+  { name: "Book", taboos: ["Pages","Read","Story","Library"] },
+  { name: "Backpack", taboos: ["Bag","Carry","School","Straps"] },
+  { name: "Classroom", taboos: ["Desk","Board","Students","Teacher"] },
+  { name: "Homework", taboos: ["Assignments","After school","Study","Worksheet"] },
 
-      { name: "Sun", taboos: ["Hot","Day","Bright","Sky"] },
-      { name: "Moon", taboos: ["Night","Sky","Round","Light"] },
-      { name: "Stars", taboos: ["Night","Twinkle","Sky","Shine"] },
-      { name: "Cloud", taboos: ["White","Sky","Rain","Fluffy"] },
-      { name: "Rain", taboos: ["Wet","Umbrella","Drops","Cloudy"] },
-      { name: "Snow", taboos: ["White","Cold","Winter","Flakes"] },
-      { name: "River", taboos: ["Water","Flow","Stream","Bank"] },
-      { name: "Mountain", taboos: ["Tall","Climb","Rock","Peak"] },
-      { name: "Tree", taboos: ["Leaves","Trunk","Branch","Forest"] },
-      { name: "Flower", taboos: ["Petals","Garden","Smell","Plant"] },
+  // Food (11–20)
+  { name: "Pizza", taboos: ["Cheese","Slice","Oven","Toppings"] },
+  { name: "Ice Cream", taboos: ["Cold","Scoop","Cone","Dessert"] },
+  { name: "Sandwich", taboos: ["Bread","Cheese","Lunch","Fillings"] },
+  { name: "Apple", taboos: ["Red","Fruit","Tree","Crunchy"] },
+  { name: "Banana", taboos: ["Yellow","Fruit","Peel","Monkey"] },
+  { name: "Mango", taboos: ["Orange","Fruit","Summer","Sweet"] },
+  { name: "Chocolate", taboos: ["Sweet","Candy","Bar","Brown"] },
+  { name: "Candy", taboos: ["Sugar","Sweet","Wrapper","Treat"] },
+  { name: "Juice", taboos: ["Drink","Fruit","Glass","Orange"] },
+  { name: "Water Bottle", taboos: ["Drink","Refill","Plastic","Thirsty"] },
 
-      { name: "Book", taboos: ["Pages","Read","Story","Library"] },
-      { name: "Pencil", taboos: ["Write","Sharp","Eraser","Lead"] },
-      { name: "Eraser", taboos: ["Rub","Remove","Pencil","Mistake"] },
-      { name: "Backpack", taboos: ["Bag","School","Books","Carry"] },
-      { name: "Desk", taboos: ["Table","Chair","School","Work"] },
-      { name: "Homework", taboos: ["School","Teacher","Worksheet","After"] },
-      { name: "Test", taboos: ["Exam","Study","Marks","Questions"] },
-      { name: "Recess", taboos: ["Break","Play","Outside","School"] },
-      { name: "Playground", taboos: ["Slide","Swing","Park","Play"] },
-      { name: "Swing", taboos: ["Push","Back","Forth","Seat"] },
+  // Family & Home (21–30)
+  { name: "Mother", taboos: ["Mom","Parent","Woman","Family"] },
+  { name: "Father", taboos: ["Dad","Parent","Man","Family"] },
+  { name: "Sister", taboos: ["Girl","Sibling","Brother","Family"] },
+  { name: "Brother", taboos: ["Boy","Sibling","Sister","Family"] },
+  { name: "Grandma", taboos: ["Old","Mother","Grandpa","Family"] },
+  { name: "Grandpa", taboos: ["Old","Father","Grandma","Family"] },
+  { name: "Baby", taboos: ["Small","Cry","Diaper","Cute"] },
+  { name: "Family", taboos: ["Home","Parents","Children","Together"] },
+  { name: "House", taboos: ["Home","Rooms","Live","Door"] },
+  { name: "Bedroom", taboos: ["Sleep","Bed","Pillow","Night"] },
 
-      { name: "Football", taboos: ["Ball","Goal","Kick","Team"] },
-      { name: "Basketball", taboos: ["Hoop","Bounce","Dribble","Court"] },
-      { name: "Swimming", taboos: ["Pool","Water","Strokes","Goggles"] },
-      { name: "Bicycle", taboos: ["Bike","Pedal","Wheels","Ride"] },
-      { name: "Skipping rope", taboos: ["Jump","Rope","Feet","Game"] },
-      { name: "Dance", taboos: ["Music","Move","Steps","Rhythm"] },
-      { name: "Music", taboos: ["Song","Notes","Sound","Listen"] },
-      { name: "Piano", taboos: ["Keys","Instrument","Music","Play"] },
-      { name: "Guitar", taboos: ["Strings","Instrument","Music","Play"] },
-      { name: "Song", taboos: ["Sing","Music","Lyrics","Tune"] },
+  // Nature & Weather (31–40)
+  { name: "Sun", taboos: ["Hot","Day","Bright","Sky"] },
+  { name: "Moon", taboos: ["Night","Sky","Round","Light"] },
+  { name: "Rainbow", taboos: ["Colors","Sky","Rain","Arc"] },
+  { name: "Cloud", taboos: ["White","Sky","Rain","Fluffy"] },
+  { name: "Rain", taboos: ["Wet","Umbrella","Drops","Cloudy"] },
+  { name: "Snow", taboos: ["White","Cold","Winter","Flakes"] },
+  { name: "River", taboos: ["Water","Flow","Stream","Bank"] },
+  { name: "Mountain", taboos: ["Tall","Climb","Rock","Peak"] },
+  { name: "Tree", taboos: ["Leaves","Trunk","Branch","Forest"] },
+  { name: "Flower", taboos: ["Petals","Garden","Smell","Plant"] },
 
-      { name: "Sister", taboos: ["Girl","Sibling","Brother","Family"] },
-      { name: "Brother", taboos: ["Boy","Sibling","Sister","Family"] },
-      { name: "Mother", taboos: ["Mom","Parent","Lady","Family"] },
-      { name: "Father", taboos: ["Dad","Parent","Man","Family"] },
-      { name: "Grandma", taboos: ["Old","Mother","Grandpa","Family"] },
-      { name: "Grandpa", taboos: ["Old","Father","Grandma","Family"] },
-      { name: "Baby", taboos: ["Small","Cry","Diaper","Cute"] },
-      { name: "Family", taboos: ["Home","Parents","Children","Together"] },
-      { name: "House", taboos: ["Home","Rooms","Live","Door"] },
-      { name: "Bedroom", taboos: ["Sleep","Bed","Pillow","Night"] },
+  // Sports & Play (41–50)
+  { name: "Football", taboos: ["Ball","Goal","Kick","Team"] },
+  { name: "Basketball", taboos: ["Hoop","Bounce","Dribble","Court"] },
+  { name: "Cricket", taboos: ["Bat","Ball","Wickets","Team"] },
+  { name: "Swimming", taboos: ["Pool","Water","Strokes","Goggles"] },
+  { name: "Bicycle", taboos: ["Bike","Pedal","Wheels","Ride"] },
+  { name: "Skipping Rope", taboos: ["Jump","Rope","Feet","Game"] },
+  { name: "Playground", taboos: ["Slide","Swing","Park","Play"] },
+  { name: "Slide", taboos: ["Down","Playground","Steps","Smooth"] },
+  { name: "Swing", taboos: ["Push","Back","Forth","Seat"] },
+  { name: "Park", taboos: ["Grass","Trees","Bench","Play"] },
 
-      { name: "Chocolate", taboos: ["Sweet","Candy","Bar","Brown"] },
-      { name: "Candy", taboos: ["Sweet","Sugar","Treat","Wrapper"] },
-      { name: "Potato chips", taboos: ["Snack","Salty","Packet","Crunchy"] },
-      { name: "Sandwich", taboos: ["Bread","Cheese","Lunch","Slice"] },
-      { name: "Milk", taboos: ["White","Drink","Glass","Cow"] },
-      { name: "Water bottle", taboos: ["Drink","Refill","Plastic","Thirsty"] },
-      { name: "Juice", taboos: ["Fruit","Drink","Glass","Orange"] },
-      { name: "Apple", taboos: ["Red","Fruit","Tree","Crunchy"] },
-      { name: "Banana", taboos: ["Yellow","Fruit","Peel","Monkey"] },
-      { name: "Mango", taboos: ["Orange","Fruit","Summer","Sweet"] },
+  // Animals (51–60)
+  { name: "Lion", taboos: ["King","Jungle","Mane","Roar"] },
+  { name: "Tiger", taboos: ["Stripes","Wild","Big cat","Roar"] },
+  { name: "Elephant", taboos: ["Trunk","Big","Grey","Tusk"] },
+  { name: "Monkey", taboos: ["Banana","Climb","Tail","Jungle"] },
+  { name: "Giraffe", taboos: ["Tall","Neck","Spots","Zoo"] },
+  { name: "Rabbit", taboos: ["Ears","Hop","Carrot","Furry"] },
+  { name: "Fish", taboos: ["Water","Swim","Fins","Tank"] },
+  { name: "Dolphin", taboos: ["Ocean","Swim","Jump","Smart"] },
+  { name: "Bird", taboos: ["Wings","Fly","Nest","Feathers"] },
+  { name: "Butterfly", taboos: ["Wings","Colors","Fly","Garden"] },
 
-      { name: "Train", taboos: ["Tracks","Station","Engine","Travel"] },
-      { name: "Airplane", taboos: ["Wings","Fly","Airport","Pilot"] },
-      { name: "Car", taboos: ["Drive","Road","Wheels","Engine"] },
-      { name: "Bus", taboos: ["Big","School","Seats","Driver"] },
-      { name: "Scooter", taboos: ["Ride","Wheels","Push","Handle"] },
-      { name: "Road", taboos: ["Cars","Street","Traffic","Drive"] },
-      { name: "Traffic light", taboos: ["Red","Green","Signal","Stop"] },
-      { name: "Bridge", taboos: ["River","Cross","Road","Over"] },
-      { name: "Park", taboos: ["Grass","Trees","Bench","Play"] },
-      { name: "Zoo", taboos: ["Animals","Cages","Visit","Keeper"] },
+  // Jobs (61–70)
+  { name: "Doctor", taboos: ["Hospital","Medicine","Sick","Nurse"] },
+  { name: "Nurse", taboos: ["Doctor","Hospital","Care","Medicine"] },
+  { name: "Police Officer", taboos: ["Uniform","Law","Arrest","Station"] },
+  { name: "Firefighter", taboos: ["Fire","Truck","Hose","Rescue"] },
+  { name: "Chef", taboos: ["Cook","Kitchen","Food","Restaurant"] },
+  { name: "Artist", taboos: ["Paint","Draw","Colors","Picture"] },
+  { name: "Scientist", taboos: ["Lab","Experiment","Test","Study"] },
+  { name: "Astronaut", taboos: ["Space","Rocket","Moon","Suit"] },
+  { name: "Singer", taboos: ["Voice","Song","Music","Microphone"] },
+  { name: "Dancer", taboos: ["Dance","Stage","Music","Moves"] },
 
-      { name: "Lion", taboos: ["King","Jungle","Mane","Roar"] },
-      { name: "Elephant", taboos: ["Trunk","Big","Grey","Tusk"] },
-      { name: "Monkey", taboos: ["Banana","Climb","Tail","Jungle"] },
-      { name: "Giraffe", taboos: ["Tall","Neck","Spots","Zoo"] },
-      { name: "Rabbit", taboos: ["Ears","Hop","Carrot","Furry"] },
-      { name: "Fish", taboos: ["Water","Swim","Fins","Tank"] },
-      { name: "Butterfly", taboos: ["Wings","Colors","Fly","Garden"] },
-      { name: "Bird", taboos: ["Wings","Fly","Nest","Feathers"] },
-      { name: "Dolphin", taboos: ["Ocean","Swim","Jump","Smart"] },
-      { name: "Whale", taboos: ["Big","Ocean","Water","Blow"] },
+  // Transport (71–80)
+  { name: "Train", taboos: ["Tracks","Station","Engine","Travel"] },
+  { name: "Airplane", taboos: ["Wings","Fly","Airport","Pilot"] },
+  { name: "Car", taboos: ["Drive","Road","Wheels","Engine"] },
+  { name: "Bus", taboos: ["Big","Seats","Route","Driver"] },
+  { name: "Truck", taboos: ["Cargo","Big","Wheels","Road"] },
+  { name: "Taxi", taboos: ["Cab","Ride","Fare","Car"] },
+  { name: "Scooter", taboos: ["Ride","Wheels","Handle","Street"] },
+  { name: "Ship", taboos: ["Ocean","Boat","Sail","Port"] },
+  { name: "Rocket", taboos: ["Space","Blast off","Fire","Astronaut"] },
+  { name: "Helmet", taboos: ["Head","Safety","Bike","Protect"] },
 
-      { name: "Doctor", taboos: ["Hospital","Medicine","Sick","Nurse"] },
-      { name: "Nurse", taboos: ["Doctor","Hospital","Care","Medicine"] },
-      { name: "Police officer", taboos: ["Uniform","Law","Arrest","Station"] },
-      { name: "Firefighter", taboos: ["Fire","Truck","Hose","Rescue"] },
-      { name: "Chef", taboos: ["Cook","Kitchen","Food","Restaurant"] },
-      { name: "Artist", taboos: ["Paint","Draw","Colors","Picture"] },
-      { name: "Scientist", taboos: ["Lab","Experiment","Test","Study"] },
-      { name: "Astronaut", taboos: ["Space","Rocket","Moon","Suit"] },
-      { name: "Singer", taboos: ["Voice","Song","Music","Microphone"] },
-      { name: "Dancer", taboos: ["Dance","Stage","Music","Moves"] },
+  // Fun & Objects (81–90)
+  { name: "Movie", taboos: ["Film","Watch","Theatre","Actors"] },
+  { name: "Cartoon", taboos: ["TV","Funny","Characters","Drawing"] },
+  { name: "Robot", taboos: ["Metal","Machine","Program","Automatic"] },
+  { name: "Game", taboos: ["Play","Rules","Win","Lose"] },
+  { name: "Puzzle", taboos: ["Pieces","Fit","Solve","Picture"] },
+  { name: "Computer", taboos: ["Screen","Keyboard","Mouse","Internet"] },
+  { name: "Tablet", taboos: ["Screen","Touch","Apps","Device"] },
+  { name: "Phone", taboos: ["Call","Ring","Mobile","Talk"] },
+  { name: "Camera", taboos: ["Photo","Picture","Lens","Shoot"] },
+  { name: "Clock", taboos: ["Time","Hour","Minute","Watch"] },
 
-      { name: "Movie", taboos: ["Film","Watch","Theatre","Actors"] },
-      { name: "Cartoon", taboos: ["TV","Funny","Characters","Draw"] },
-      { name: "Robot", taboos: ["Metal","Machine","Program","Automatic"] },
-      { name: "Dinosaur", taboos: ["Extinct","Big","Fossils","Jurassic"] },
-      { name: "Fairy", taboos: ["Wings","Magic","Dust","Tiny"] },
-      { name: "Princess", taboos: ["Castle","Crown","Royal","Dress"] },
-      { name: "Castle", taboos: ["King","Queen","Walls","Towers"] },
-      { name: "Magic", taboos: ["Tricks","Wand","Spells","Wizard"] },
-      { name: "Superhero", taboos: ["Powers","Cape","Save","Comic"] },
-      { name: "Treasure", taboos: ["Chest","Gold","Pirate","Map"] }
-    ];
+  // Fantasy (91–100)
+  { name: "Dinosaur", taboos: ["Extinct","Big","Fossils","Jurassic"] },
+  { name: "Fairy", taboos: ["Wings","Magic","Dust","Tiny"] },
+  { name: "Princess", taboos: ["Castle","Crown","Royal","Dress"] },
+  { name: "Prince", taboos: ["Castle","Crown","Royal","King"] },
+  { name: "Castle", taboos: ["King","Queen","Walls","Towers"] },
+  { name: "Dragon", taboos: ["Fire","Wings","Scales","Roar"] },
+  { name: "Magic", taboos: ["Tricks","Wand","Spells","Wizard"] },
+  { name: "Superhero", taboos: ["Powers","Cape","Save","Comic"] },
+  { name: "Treasure", taboos: ["Chest","Gold","Pirate","Map"] },
+  { name: "Pirate", taboos: ["Ship","Treasure","Eye patch","Sea"] }
+];
 
-    const sixWords = [
-      "cat","dog","sun","moon","star","bed","bus","car","ball","doll",
-      "toy","book","pen","bag","hat","cap","cup","milk","cake","jam",
-      "egg","fish","bird","tree","leaf","rain","snow","park","swing","slide",
-      "top","red","blue","big","small","happy","sad","run","jump","walk",
-      "sit","stand","hand","foot","eye","nose","mouth","hair","face","home",
-      "school","class","desk","chair","friend","baby","sister","brother","grandma","grandpa"
-    ];
+
+const sixWords = [
+  // Animals (1–10)
+  "cat","dog","bat","rat","cow",
+  "pig","hen","ant","bug","bee",
+
+  // Nature & weather (11–20)
+  "sun","moon","star","sky","cloud",
+  "rain","snow","wind","tree","leaf",
+
+  // Family & people (21–30)
+  "boy","girl","mom","dad","baby",
+  "brother","sister","grandma","grandpa","friend",
+
+  // Home & room (31–40)
+  "bed","chair","desk","door","wall",
+  "roof","room","home","house","table",
+
+  // Transport (41–50)
+  "bus","car","jeep","boat","ship",
+  "train","plane","bike","road","bridge",
+
+  // Play & toys (51–60)
+  "ball","toy","doll","game","block",
+  "kite","swing","slide","park","play",
+
+  // School things (61–70)
+  "book","page","pen","pencil","crayon",
+  "bag","box","tape","glue","ruler",
+
+  // Food & drink (71–80)
+  "rice","bread","milk","egg","fish",
+  "meat","pear","plum","cake","juice",
+
+  // Colors (81–90)
+  "red","blue","green","black","white",
+  "pink","gray","gold","silver","brown",
+
+  // Actions (91–100)
+  "run","walk","skip","jump","swim",
+  "read","write","sing","dance","smile"
+];
 
     // ---------- CATEGORY REGISTRY ----------
     // To add a new category (e.g. "cityNames"), just add another entry here.
@@ -898,4 +942,5 @@
   </script>
 </body>
 </html>
+
 
